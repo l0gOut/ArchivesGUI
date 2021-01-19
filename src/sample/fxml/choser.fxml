@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="pane" prefHeight="100.0" prefWidth="332.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.ControllerChose">
+    <Button layoutX="14.0" layoutY="50.0" mnemonicParsing="false" onAction="#archive" prefHeight="25.0" prefWidth="132.0" text="Архивация" />
+    <Button layoutX="186.0" layoutY="50.0" mnemonicParsing="false" onAction="#unzip" prefHeight="25.0" prefWidth="132.0" text="Разорхивация" />
+    <Text layoutX="89.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Выберите что хотите делать" />
+</AnchorPane>

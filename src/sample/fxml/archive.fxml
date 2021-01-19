@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.ControllerArchive">
+   <TextField fx:id="txtPathToFiles" layoutX="14.0" layoutY="293.0" />
+   <TextField fx:id="txtArchiveName" layoutX="257.0" layoutY="293.0" />
+   <TextArea fx:id="txtArea" editable="false" layoutX="14.0" layoutY="14.0" prefHeight="239.0" prefWidth="573.0" />
+   <Text layoutX="14.0" layoutY="278.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Путь к файлам для архивирования" />
+   <TextField fx:id="txtPathArchive" layoutX="14.0" layoutY="346.0" />
+   <Text layoutX="14.0" layoutY="334.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Путь где будет создан архив" />
+   <Button layoutX="163.0" layoutY="346.0" mnemonicParsing="false" onAction="#buttonPathArchive" prefHeight="25.0" prefWidth="25.0" text="..." />
+   <Button layoutX="163.0" layoutY="293.0" mnemonicParsing="false" onAction="#buttonPathToFiles" prefHeight="25.0" prefWidth="25.0" text="..." />
+   <Text layoutX="237.0" layoutY="278.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Имя архива (стандартное имя archive)" />
+   <Button layoutX="284.0" layoutY="346.0" mnemonicParsing="false" onAction="#buttonArchive" text="Архивировать" />
+   <Text fx:id="label" layoutX="478.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="108.13671875" />
+   <Button layoutX="514.0" layoutY="346.0" mnemonicParsing="false" onAction="#back" text="Вернуться" />
+</Pane>

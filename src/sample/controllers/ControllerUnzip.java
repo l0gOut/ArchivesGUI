@@ -10,21 +10,16 @@ import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import org.w3c.dom.Text;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.zip.ZipFile;
 
 public class ControllerUnzip {
 
@@ -66,30 +61,25 @@ public class ControllerUnzip {
             int length = pathToArchive.getFileName().toString().length() - 4;
             dirName = pathToArchive.getFileName().toString().substring(0,length);
         }
-        ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(pathToArchive.toString()));
-        while (zipInputStream.available() > 0){
-            ZipEntry zipEntry = zipInputStream.getNextEntry();
-            if (zipEntry == null) break;
-            list.add(zipEntry);
+        ZipFile zipFile = new ZipFile(pathToArchive.toFile());
+        for (Enumeration<? extends ZipEntry> enumeration = zipFile.entries(); enumeration.hasMoreElements();){
+            list.add(enumeration.nextElement());
         }
-        if (Files.notExists(Paths.get(pathToDir + File.separator + dirName))){
-            Files.createDirectory(Paths.get(pathToDir + File.separator + dirName));
-        }
-        for (ZipEntry file: list){
-            Path path = Paths.get(pathToDir + File.separator + dirName + File.separator + file.toString());
-            if (file.isDirectory() && Files.notExists(path)){
+
+        list.add(0, new ZipEntry(dirName + "/"));
+
+        for (ZipEntry zipEntry: list) {
+            Path path = concatPath(pathToDir, zipEntry);
+            System.out.println(path);
+            if (zipEntry.isDirectory() && Files.notExists(path)){
                 Files.createDirectory(path);
-                txtArea.setText(txtArea.getText() + "\n" + path + "\t Директория создана!");
-                continue;
-            }
-            if (Files.notExists(path)){
-                Files.createFile(path);
-                txtArea.setText(txtArea.getText() + "\n" + path + "\t Файл создан!");
-                Files.copy(zipInputStream, path, StandardCopyOption.REPLACE_EXISTING);
+                txtArea.setText(txtArea.getText() + "\n" + path + " Директория создана!");
+            } else if (Files.notExists(path)){
+                InputStream inputStream = zipFile.getInputStream(zipEntry);
+                Files.copy(inputStream,path);
+                txtArea.setText(txtArea.getText() + "\n" + path + " Файл создан!");
             }
         }
-        zipInputStream.closeEntry();
-        zipInputStream.close();
     }
 
     @FXML
@@ -103,4 +93,7 @@ public class ControllerUnzip {
         primaryStage.show();
     }
 
+    public Path concatPath(Path pathToDir, ZipEntry zipEntry){
+        return Paths.get(pathToDir + File.separator +  zipEntry.toString());
+    }
 }

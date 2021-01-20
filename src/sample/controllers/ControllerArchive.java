@@ -83,18 +83,17 @@ public class ControllerArchive {
         return file.toString().substring(subPathLength);
     }
     public void zipArchive(String pathToFile,String pathArchive) throws Exception {
-        int sum = 0;
+        double sum = 0;
         Path pathSource = Paths.get(pathToFile);
         Files.walkFileTree(pathSource, myFileVisitor);
         ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(pathArchive));
         for (File file: myFileVisitor.getFileList()){
             String archiveEnd = subPath(pathSource.toFile(), file);
-            System.out.println(file);
             if (file.isDirectory()){
-                ZipEntry zipEntry = new ZipEntry(archiveEnd + "\\");
+                ZipEntry zipEntry = new ZipEntry(archiveEnd + "/");
                 zipOutputStream.putNextEntry(zipEntry);
                 zipOutputStream.closeEntry();
-                txtArea.setText(txtArea.getText() + "\n" + file.getAbsolutePath() + "     Директория архивирована успешно! ");
+                txtArea.setText(String.format("%s \n %-40s Директория архивирована успешно!",txtArea.getText(),file.getAbsolutePath()));
             }
             if (file.isFile()){
                 ZipEntry zipEntry = new ZipEntry(archiveEnd);
@@ -103,11 +102,11 @@ public class ControllerArchive {
                 zipOutputStream.closeEntry();
                 long size = zipEntry.getSize();
                 long sizeComp = zipEntry.getCompressedSize();
-                sum += sizeComp;
-                txtArea.setText(txtArea.getText() + "\n" + file.getAbsolutePath() + "     Файл архивирован успешно! " + size + "   " + sizeComp);
+                sum += (double) sizeComp/1024;
+                txtArea.setText(String.format("%s \n %-40s Файл архивирован успешно! %d (%d) ",txtArea.getText(),file.getAbsolutePath(),size,sizeComp));
             }
         }
-        label.setText("Общий размер архива " + sum);
+        label.setText(String.format("Общий размер архива %.0f КБ",  sum));
         zipOutputStream.close();
     }
 }
